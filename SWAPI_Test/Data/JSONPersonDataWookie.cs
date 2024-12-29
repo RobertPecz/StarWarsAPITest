@@ -1,4 +1,4 @@
-﻿namespace SWAPI_Test
+﻿namespace SWAPI_Test.Data
 {
     internal class JSONPersonDataWookie
     {

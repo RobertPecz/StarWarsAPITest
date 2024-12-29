@@ -1,4 +1,6 @@
-﻿namespace SWAPI_Test
+﻿using SWAPI_Test.Data;
+
+namespace SWAPI_Test.Helpers
 {
     internal class SimpleWookieResponseDataPairer
     {
@@ -12,7 +14,7 @@
             var jsonPersonDataProperties = jSONPersonData.GetType().GetProperties();
             var jsonPersonDataWookiesProperties = jSONPersonDataWookie.GetType().GetProperties();
 
-            for ( int i = 0; i < jsonPersonDataProperties.Length; i++)
+            for (int i = 0; i < jsonPersonDataProperties.Length; i++)
             {
                 DataPairs.Add(jsonPersonDataProperties[i].Name, jsonPersonDataWookiesProperties[i].Name);
             }

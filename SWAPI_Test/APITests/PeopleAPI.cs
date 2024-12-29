@@ -3,8 +3,10 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using RestSharp;
+using SWAPI_Test.Data;
+using SWAPI_Test.Helpers;
 
-namespace SWAPI_Test
+namespace SWAPI_Test.APITests
 {
     public class PeopleAPI
     {
@@ -12,10 +14,10 @@ namespace SWAPI_Test
         [TestCase(2, true)]
         [TestCase(1000, false)]
         public void GetSWPeople(int id, bool wookieFormat)
-        {           
+        {
             var url = "https://swapi.dev/api/people/" + id.ToString();
             RequestHelper request = new RequestHelper();
-            
+
             RestResponse restResponse = request.GetResponse(url);
 
             Assert.That(restResponse.StatusCode, Is.Not.Null);
@@ -26,20 +28,20 @@ namespace SWAPI_Test
                 SimpleWookieResponseDataPairer simpleWookieResponseDataPairer = new SimpleWookieResponseDataPairer();
                 url = url + "/?format=wookiee";
                 restResponse = request.GetResponse(url);
-                
+
                 IList<JToken> species = jsonObject["species"].Children().ToList();
                 foreach (JToken speciesItem in species)
                 {
-                    if((string)speciesItem == "https://swapi.dev/api/species/2/")
+                    if ((string)speciesItem == "https://swapi.dev/api/species/2/")
                     {
-                        JSONPersonDataWookie jSONPersonDataWookie = JsonConvert.DeserializeObject<JSONPersonDataWookie>(restResponse.Content);                       
+                        JSONPersonDataWookie jSONPersonDataWookie = JsonConvert.DeserializeObject<JSONPersonDataWookie>(restResponse.Content);
                         jSONPersonDataWookie.whrascwo = (string)jsonObject[simpleWookieResponseDataPairer.DataPairs.FirstOrDefault(element => element.Value == "whrascwo").Key];
                     }
-                }              
+                }
             }
             else if (restResponse.StatusCode == HttpStatusCode.OK && restResponse.Content != null && !wookieFormat)
-            {                
-                Assert.That(jSONPersonData.edited >= jSONPersonData.created);              
+            {
+                Assert.That(jSONPersonData.edited >= jSONPersonData.created);
             }
             else
             {
@@ -61,7 +63,7 @@ namespace SWAPI_Test
 
             Assert.That(jSONPersonBulkData.results.Count, Is.EqualTo(10));
 
-            if(jSONPersonBulkData.next != null) 
+            if (jSONPersonBulkData.next != null)
             {
                 restResponse = request.GetResponse(jSONPersonBulkData.next);
                 Assert.That(restResponse.StatusCode, Is.Not.Null);
@@ -77,7 +79,7 @@ namespace SWAPI_Test
         [TestCase("c")]
         [TestCase("aaaa")] //failing as the invalid request respond 200.      
         public void GetSWPeopleSearch(string search)
-        {           
+        {
             var url = "https://swapi.dev/api/people/?search=" + search.ToLowerInvariant();
             RequestHelper request = new RequestHelper();
 
@@ -85,8 +87,8 @@ namespace SWAPI_Test
             Assert.That(restResponse.StatusCode, Is.Not.Null);
 
             JSONPersonBulkData jSONPersonBulkData = JsonConvert.DeserializeObject<JSONPersonBulkData>(restResponse.Content);
-            
-            if(jSONPersonBulkData.count == 0)
+
+            if (jSONPersonBulkData.count == 0)
             {
                 Assert.That(restResponse.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
             }

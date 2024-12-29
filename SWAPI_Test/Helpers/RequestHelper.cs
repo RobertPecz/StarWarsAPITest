@@ -1,6 +1,6 @@
 ﻿using RestSharp;
 
-namespace SWAPI_Test
+namespace SWAPI_Test.Helpers
 {
     internal class RequestHelper
     {
