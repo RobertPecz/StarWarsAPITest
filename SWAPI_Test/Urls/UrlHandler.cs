@@ -1,5 +1,4 @@
-﻿
-namespace SWAPI_Test
+﻿namespace SWAPI_Test.Urls
 {
     internal class UrlHandler
     {

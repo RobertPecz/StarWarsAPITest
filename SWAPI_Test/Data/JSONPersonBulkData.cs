@@ -1,4 +1,4 @@
-﻿namespace SWAPI_Test
+﻿namespace SWAPI_Test.Data
 {
     internal class JSONPersonBulkData
     {
@@ -6,6 +6,5 @@
         public string next { get; set; }
         public string previous { get; set; }
         public List<JSONPersonData> results { get; set; }
-
     }
 }
